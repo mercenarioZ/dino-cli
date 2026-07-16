@@ -50,7 +50,10 @@ func runCommit(args []string) error {
 		statusf("the diff is chunky, so only the first %d characters will be sent", maxDiffChars)
 	}
 	statusf("asking the model for a conventional commit message")
+
+	loading := startSpinner("generating commit message")
 	message, err := generateCommitMessage(context.Background(), *model, diff)
+	loading.stop()
 	if err != nil {
 		return err
 	}
