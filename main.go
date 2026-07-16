@@ -7,7 +7,7 @@ import (
 
 func main() {
 	if err := run(os.Args[1:]); err != nil {
-		fmt.Fprintln(os.Stderr, "Error:", err)
+		fmt.Fprintln(os.Stderr, "dino:", err)
 		os.Exit(1)
 	}
 }

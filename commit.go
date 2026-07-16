@@ -40,8 +40,16 @@ func runCommit(args []string) error {
 	if err != nil {
 		return err
 	}
+
 	if strings.TrimSpace(diff) == "" {
-		return errors.New("no git diff found")
+		switch {
+		case *stagedOnly:
+			return errors.New("nothing to commit - no staged changes found")
+		case *unstagedOnly:
+			return errors.New("nothing to commit - no unstaged changes found")
+		default:
+			return errors.New("nothing to commit - no staged or unstaged changes found")
+		}
 	}
 
 	loading := startSpinner("generating commit message")
