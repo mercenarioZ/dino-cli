@@ -45,6 +45,3 @@ func (s *spinner) stop() {
 	s.wg.Wait()
 }
 
-func statusf(format string, args ...any) {
-	fmt.Fprintf(os.Stderr, "dino: "+format+"\n", args...)
-}

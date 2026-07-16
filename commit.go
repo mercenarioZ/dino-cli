@@ -36,20 +36,13 @@ func runCommit(args []string) error {
 		return errors.New("choose only one of --staged or --unstaged")
 	}
 
-	statusf("checking the diff before making any claims")
-	diff, source, err := readDiff(*stagedOnly, *unstagedOnly)
+	diff, _, err := readDiff(*stagedOnly, *unstagedOnly)
 	if err != nil {
 		return err
 	}
 	if strings.TrimSpace(diff) == "" {
 		return errors.New("no git diff found")
 	}
-	statusf("using %s changes", source)
-
-	if len(diff) > maxDiffChars {
-		statusf("the diff is chunky, so only the first %d characters will be sent", maxDiffChars)
-	}
-	statusf("asking the model for a conventional commit message")
 
 	loading := startSpinner("generating commit message")
 	message, err := generateCommitMessage(context.Background(), *model, diff)
@@ -57,10 +50,8 @@ func runCommit(args []string) error {
 	if err != nil {
 		return err
 	}
-	statusf("message ready")
 
 	fmt.Printf("%s\n\n", strings.TrimSpace(message))
-	fmt.Fprintf(os.Stderr, "Generated from %s diff.\n", source)
 	return nil
 }
 
