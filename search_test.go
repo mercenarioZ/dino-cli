@@ -3,7 +3,7 @@ package main
 import "testing"
 
 func TestWebSearchReq_RequiresWebSearch(t *testing.T) {
-	request := buildWebSearchReq(
+	request := buildWebSearchRequest(
 		"gpt-5.6",
 		"latest Go release",
 	)
@@ -20,7 +20,7 @@ func TestWebSearchReq_RequiresWebSearch(t *testing.T) {
 		t.Fatalf("got %d tools, want 1", len(request.Tools))
 	}
 
-	if request.Tools[0] != "web_search" {
+	if request.Tools[0].Type != "web_search" {
 		t.Errorf("got tool %q, want web_search", request.Tools[0].Type)
 	}
 

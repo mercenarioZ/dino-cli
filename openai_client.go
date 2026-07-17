@@ -56,12 +56,12 @@ type responseTool struct {
 }
 
 type responsesRequest struct {
-	Model        string `json:"model"`
-	Instructions string `json:"instructions"`
-	Input        string `json:"input"`
-	MaxTokens    int    `json:"max_output_tokens"`
-	Tools []responseTool `json:"tools,omitempty"`
-	ToolChoice string `json:"tool_choice,omitempty"`
+	Model        string         `json:"model"`
+	Instructions string         `json:"instructions"`
+	Input        string         `json:"input"`
+	MaxTokens    int            `json:"max_output_tokens"`
+	Tools        []responseTool `json:"tools,omitempty"`
+	ToolChoice   string         `json:"tool_choice,omitempty"`
 }
 
 type responsesResponse struct {
