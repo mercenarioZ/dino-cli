@@ -4,22 +4,24 @@ import (
 	"context"
 	"errors"
 	"strings"
+
+	"github.com/mercenarioZ/dino/internal/openai"
 )
 
 func generateCommitMessage(ctx context.Context, model string, diff string) (string, error) {
-	reqBody := responsesRequest{
+	reqBody := openai.Request{
 		Model:        model,
 		Instructions: commitInstructions(),
 		Input:        commitInput(diff),
 		MaxTokens:    400,
 	}
 
-	respBody, err := sendResponsesRequest(ctx, reqBody)
+	client, err := newOpenAIClient()
 	if err != nil {
 		return "", err
 	}
 
-	message, err := parseResponsesText(respBody)
+	message, err := client.CreateResponse(ctx, reqBody)
 	if err != nil {
 		return "", err
 	}

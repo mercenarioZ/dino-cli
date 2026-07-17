@@ -7,15 +7,17 @@ import (
 	"fmt"
 	"os"
 	"strings"
+
+	"github.com/mercenarioZ/dino/internal/openai"
 )
 
-func buildWebSearchRequest(model string, query string) responsesRequest {
-	return responsesRequest{
+func buildWebSearchRequest(model string, query string) openai.Request {
+	return openai.Request{
 		Model:        model,
 		Instructions: "Search the live web before answering, include sources!",
 		Input:        query,
 		MaxTokens:    2048,
-		Tools: []responseTool{
+		Tools: []openai.Tool{
 			{Type: "web_search"},
 		},
 		ToolChoice: "required",
@@ -31,14 +33,12 @@ func searchWeb(ctx context.Context, model string, query string) (string, error) 
 
 	request := buildWebSearchRequest(model, query)
 
-	body, err := sendResponsesRequest(ctx, request)
-
+	client, err := newOpenAIClient()
 	if err != nil {
 		return "", err
 	}
 
-	ans, err := parseResponsesText(body)
-
+	ans, err := client.CreateResponse(ctx, request)
 	if err != nil {
 		return "", err
 	}

@@ -3,6 +3,8 @@ package main
 import (
 	"os"
 	"strings"
+
+	"github.com/mercenarioZ/dino/internal/openai"
 )
 
 const (
@@ -20,6 +22,11 @@ func loadOpenAIConfig() openAIConfig {
 		APIKey:       firstEnv("DINO_OPENAI_API_KEY", "OPENAI_API_KEY"),
 		ResponsesURL: envOrDefault("DINO_OPENAI_RESPONSES_URL", defaultOpenAIResponsesURL),
 	}
+}
+
+func newOpenAIClient() (*openai.Client, error) {
+	config := loadOpenAIConfig()
+	return openai.NewClient(config.APIKey, config.ResponsesURL)
 }
 
 func firstEnv(names ...string) string {

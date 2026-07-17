@@ -2,7 +2,7 @@ package main
 
 import "testing"
 
-func TestWebSearchReq_RequiresWebSearch(t *testing.T) {
+func TestWebSearchRequest(t *testing.T) {
 	request := buildWebSearchRequest(
 		"gpt-5.6",
 		"latest Go release",

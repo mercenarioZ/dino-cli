@@ -1,21 +1,18 @@
-package main
+package openai
 
 import "testing"
 
-func TestParseResponsesText_ReturnsOutputText(t *testing.T) {
+func TestParseResponseTextReturnsOutputText(t *testing.T) {
 	body := []byte(`{
 		"output_text": "feat: add login"
 	}`)
 
-	got, err := parseResponsesText(body)
-
-	// assert
+	got, err := parseResponseText(body)
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
 
 	want := "feat: add login"
-
 	if got != want {
 		t.Errorf("got %q, want %q", got, want)
 	}
