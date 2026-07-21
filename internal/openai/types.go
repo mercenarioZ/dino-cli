@@ -16,6 +16,7 @@ type Request struct {
 	MaxTokens    int    `json:"max_output_tokens"`
 	Tools        []Tool `json:"tools,omitempty"`
 	ToolChoice   string `json:"tool_choice,omitempty"`
+	Stream       bool   `json:"stream,omitempty"`
 }
 
 type response struct {
