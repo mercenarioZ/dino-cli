@@ -51,3 +51,15 @@ func TestResearchTopicRequiresTopic(t *testing.T) {
 		t.Errorf("got error %q, want %q", err.Error(), "research topic is required")
 	}
 }
+
+func TestRunResearchRequiresTopic(t *testing.T) {
+	err := runResearch(nil)
+
+	if err == nil {
+		t.Fatal("expected an error for empty topic")
+	}
+
+	if err.Error() != "research topic is required" {
+		t.Errorf("got error %q", err)
+	}
+}
