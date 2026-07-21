@@ -8,12 +8,17 @@ import (
 )
 
 type spinner struct {
-	done chan struct{}
-	wg   sync.WaitGroup
+	done      chan struct{}
+	wg        sync.WaitGroup
+	startedAt time.Time
 }
 
-func startSpinner(message string) *spinner {
-	s := &spinner{done: make(chan struct{})}
+func startSpinner(messages ...string) *spinner {
+	if len(messages) == 0 {
+		messages = []string{"working..."}
+	}
+
+	s := &spinner{done: make(chan struct{}), startedAt: time.Now()}
 	s.wg.Add(1)
 
 	go func() {
@@ -28,7 +33,12 @@ func startSpinner(message string) *spinner {
 		for {
 			select {
 			case <-ticker.C:
-				fmt.Fprintf(os.Stderr, "\r%s %s", frames[index], message)
+				elapsed := time.Since(s.startedAt).Round(1000 * time.Millisecond)
+
+				messageIndex := int(elapsed/(3*time.Second)) % len(messages)
+				message := messages[messageIndex]
+
+				fmt.Fprintf(os.Stderr, "\r\033[2K%s %s [%s]", frames[index], message, elapsed)
 				index = (index + 1) % len(frames)
 			case <-s.done:
 				fmt.Fprintf(os.Stderr, "\r\033[2K")
@@ -44,4 +54,3 @@ func (s *spinner) stop() {
 	close(s.done)
 	s.wg.Wait()
 }
-

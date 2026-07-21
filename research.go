@@ -64,7 +64,14 @@ func runResearch(args []string) error {
 		return errors.New("research topic is required")
 	}
 
-	loading := startSpinner("researching...")
+	loading := startSpinner(
+		"Searching...",
+		"Cooking...",
+		"Reasoning...",
+		"Synthesizing...",
+		"Brewing...",
+		"Codex-ing...",
+	)
 	result, err := researchTopic(context.Background(), *model, topic)
 
 	loading.stop()
