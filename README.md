@@ -20,6 +20,18 @@ dino commit --staged
 dino commit --unstaged
 ```
 
+
+## Research
+
+```sh
+dino research
+
+dino research "latest Go release"
+dino research --model gpt-5.5 "latest Go release"
+```
+```
+```
+
 ## OpenAI Configuration
 
 Set an API key before running AI-powered commands:
