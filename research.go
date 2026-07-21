@@ -41,12 +41,12 @@ func runResearch(args []string) error {
 	fs.SetOutput(os.Stderr)
 
 	/*
-	* fs.String returns a pointer, so later we need to use *model to get the model value lul
+	* fs.String returns a pointer, so later we need to use *model to get the model value
 	 */
 	model := fs.String("model", defaultOpenAIModel, "OpenAI model to use")
 
 	fs.Usage = func() {
-		fmt.Fprintf(fs.Output(), "Usage: dino research [--model MODEL] TOPIC")
+		fmt.Fprintln(fs.Output(), "Usage: dino research [--model MODEL] TOPIC")
 
 		fs.PrintDefaults()
 	}

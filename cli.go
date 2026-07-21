@@ -14,8 +14,8 @@ func run(args []string) error {
 	case "help", "-h", "--help":
 		printUsage()
 		return nil
-	case "search":
-		return runSearch(args[1:])
+	case "research":
+		return runResearch(args[1:])
 	default:
 		return fmt.Errorf("unknown command %q", args[0])
 	}
@@ -26,11 +26,11 @@ func printUsage() {
 
 Usage:
   dino commit [--staged | --unstaged] [--model MODEL]
-	dino search [--model MODEL] QUERY
+	dino research [--model MODEL] TOPIC
 
 Commands:
   commit    Generate a Conventional Commit message from the current git diff
-	search    Search the live web and answer a question
+	research    Research a topic using live web sources
 
 Configuration:
   Set DINO_OPENAI_API_KEY or OPENAI_API_KEY.
