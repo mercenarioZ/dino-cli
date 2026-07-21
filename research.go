@@ -23,7 +23,7 @@ func researchTopic(ctx context.Context, model, topic string) (string, error) {
 		return "", err
 	}
 
-	result, err := client.CreateResponse(ctx, request)
+	result, err := client.CreateResponseStream(ctx, request, nil)
 	if err != nil {
 		return "", err
 	}
