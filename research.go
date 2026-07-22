@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"encoding/json"
 	"errors"
 	"flag"
 	"fmt"
@@ -9,31 +10,31 @@ import (
 	"strings"
 )
 
-func researchTopic(ctx context.Context, model, topic string) (string, error) {
+func researchTopic(ctx context.Context, model, topic string) (ResearchReport, error) {
 	topic = strings.TrimSpace(topic)
 
 	if topic == "" {
-		return "", errors.New("research topic is required")
+		return ResearchReport{}, errors.New("research topic is required")
 	}
 
 	request := buildResearchRequest(model, topic)
 
 	client, err := newOpenAIClient()
 	if err != nil {
-		return "", err
+		return ResearchReport{}, err
 	}
 
-	result, err := client.CreateResponseStream(ctx, request, nil)
+	raw, err := client.CreateResponseStream(ctx, request, nil)
 	if err != nil {
-		return "", err
+		return ResearchReport{}, err
 	}
 
-	result = strings.TrimSpace(result)
-	if result == "" {
-		return "", errors.New("research result is empty")
+	report, err := parseResearchReport(raw)
+	if err != nil {
+		return ResearchReport{}, err
 	}
 
-	return result, nil
+	return report, nil
 }
 
 func runResearch(args []string) error {
@@ -65,22 +66,23 @@ func runResearch(args []string) error {
 	}
 
 	loading := startSpinner(
-		"Searching...",
-		"Cooking...",
-		"Reasoning...",
-		"Synthesizing...",
-		"Brewing...",
-		"Codex-ing...",
+		"researching...",
 	)
-	result, err := researchTopic(context.Background(), *model, topic)
-
+	report, err := researchTopic(context.Background(), *model, topic)
 	loading.stop()
 
 	if err != nil {
 		return err
 	}
 
-	fmt.Printf("%s\n\n", result)
+	encoder := json.NewEncoder(os.Stdout)
+	encoder.SetIndent("", "  ")
+
+	if err := encoder.Encode(report); err != nil {
+		return err
+	}
+
+	fmt.Fprintln(os.Stderr, "Research complete!")
 
 	return nil
 }
