@@ -34,6 +34,13 @@ func researchTopic(ctx context.Context, model, topic string) (ResearchReport, er
 		return ResearchReport{}, err
 	}
 
+	if err := validateResearchReport(report); err != nil {
+		return ResearchReport{}, fmt.Errorf(
+			"validate research report: %w",
+			err,
+		)
+	}
+
 	return report, nil
 }
 
