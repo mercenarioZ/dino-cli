@@ -1,8 +1,8 @@
-package main
+package research
 
 import "testing"
 
-func TestParseResearchReport(t *testing.T) {
+func TestParseReport(t *testing.T) {
 	raw := `{
 		"topic": "Server-Sent Events",
 		"summary": "SSE streams server updates over HTTP.",
@@ -23,7 +23,7 @@ func TestParseResearchReport(t *testing.T) {
 		]
 	}`
 
-	report, err := parseResearchReport(raw)
+	report, err := ParseReport(raw)
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}

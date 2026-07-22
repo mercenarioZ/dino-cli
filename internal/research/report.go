@@ -1,6 +1,6 @@
-package main
+package research
 
-type ResearchReport struct {
+type Report struct {
 	Topic     string    `json:"topic"`
 	Summary   string    `json:"summary"`
 	Findings  []Finding `json:"findings"`

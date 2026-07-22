@@ -1,11 +1,11 @@
-package main
+package research
 
 import (
 	"errors"
 	"strings"
 )
 
-func validateResearchReport(report ResearchReport) error {
+func ValidateReport(report Report) error {
 	switch {
 	case strings.TrimSpace(report.Topic) == "":
 		return errors.New("research report topic is required")

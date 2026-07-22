@@ -8,34 +8,36 @@ import (
 	"fmt"
 	"os"
 	"strings"
+
+	"github.com/mercenarioZ/dino/internal/research"
 )
 
-func researchTopic(ctx context.Context, model, topic string) (ResearchReport, error) {
+func researchTopic(ctx context.Context, model, topic string) (research.Report, error) {
 	topic = strings.TrimSpace(topic)
 
 	if topic == "" {
-		return ResearchReport{}, errors.New("research topic is required")
+		return research.Report{}, errors.New("research topic is required")
 	}
 
 	request := buildResearchRequest(model, topic)
 
 	client, err := newOpenAIClient()
 	if err != nil {
-		return ResearchReport{}, err
+		return research.Report{}, err
 	}
 
 	raw, err := client.CreateResponseStream(ctx, request, nil)
 	if err != nil {
-		return ResearchReport{}, err
+		return research.Report{}, err
 	}
 
-	report, err := parseResearchReport(raw)
+	report, err := research.ParseReport(raw)
 	if err != nil {
-		return ResearchReport{}, err
+		return research.Report{}, err
 	}
 
-	if err := validateResearchReport(report); err != nil {
-		return ResearchReport{}, fmt.Errorf(
+	if err := research.ValidateReport(report); err != nil {
+		return research.Report{}, fmt.Errorf(
 			"validate research report: %w",
 			err,
 		)

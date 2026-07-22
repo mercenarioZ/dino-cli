@@ -1,34 +1,34 @@
-package main
+package research
 
 import "testing"
 
-func TestValidateResearchReport(t *testing.T) {
+func TestValidateReport(t *testing.T) {
 	tests := []struct {
 		name    string
-		modify  func(*ResearchReport)
+		modify  func(*Report)
 		wantErr string
 	}{
 		{
 			name:   "valid report",
-			modify: func(*ResearchReport) {},
+			modify: func(*Report) {},
 		},
 		{
 			name: "empty topic",
-			modify: func(report *ResearchReport) {
+			modify: func(report *Report) {
 				report.Topic = " "
 			},
 			wantErr: "research report topic is required",
 		},
 		{
 			name: "empty summary",
-			modify: func(report *ResearchReport) {
+			modify: func(report *Report) {
 				report.Summary = ""
 			},
 			wantErr: "research summary cannot be blank",
 		},
 		{
 			name: "no findings",
-			modify: func(report *ResearchReport) {
+			modify: func(report *Report) {
 				report.Findings = nil
 			},
 			wantErr: "research report required findings",
@@ -37,10 +37,10 @@ func TestValidateResearchReport(t *testing.T) {
 
 	for _, test := range tests {
 		t.Run(test.name, func(t *testing.T) {
-			report := validResearchReport()
+			report := validReport()
 			test.modify(&report)
 
-			err := validateResearchReport(report)
+			err := ValidateReport(report)
 
 			if test.wantErr == "" {
 				if err != nil {
@@ -60,8 +60,8 @@ func TestValidateResearchReport(t *testing.T) {
 	}
 }
 
-func validResearchReport() ResearchReport {
-	return ResearchReport{
+func validReport() Report {
+	return Report{
 		Topic:   "Go runtime",
 		Summary: "How the Go runtime works",
 		Findings: []Finding{

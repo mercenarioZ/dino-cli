@@ -1,4 +1,4 @@
-package main
+package research
 
 import (
 	"encoding/json"
@@ -6,18 +6,18 @@ import (
 	"strings"
 )
 
-func parseResearchReport(raw string) (ResearchReport, error) {
-	var report ResearchReport
+func ParseReport(raw string) (Report, error) {
+	var report Report
 
 	raw = strings.TrimSpace(raw)
 	if raw == "" {
-		return ResearchReport{}, fmt.Errorf(
+		return Report{}, fmt.Errorf(
 			"research response is empty",
 		)
 	}
 
 	if err := json.Unmarshal([]byte(raw), &report); err != nil {
-		return ResearchReport{}, fmt.Errorf(
+		return Report{}, fmt.Errorf(
 			"parse research report: %w",
 			err,
 		)
